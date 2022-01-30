@@ -1,0 +1,6 @@
+= Archlinux安装kvm
+
+首先安装virt-manager、qemu和dnsmasq ，使用pacman 命令安装:
+接着启动libvirtd。
+
+(未完)
