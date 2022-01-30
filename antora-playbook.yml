@@ -1,5 +1,5 @@
 site:
-  title: 毛俊的博客
+  title: GNU/Linux简明教程
   start_page: archives::hello.adoc
 content:
   sources:
