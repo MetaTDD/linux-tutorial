@@ -1,0 +1,58 @@
+= Linux命令行解压不同格式的压缩包
+
+
+== 解压
+
+* zip格式
+
+```sh
+$ unzip filename.zip
+```
+
+* gz格式
+
+```sh
+$ gunzip filename.gz
+```
+
+* tar格式
+
+```sh
+$ tar -xvf filename.tar
+```
+* tar.gz格式
+
+```sh
+$ tar -xzf filename.tar.gz
+```
+
+* tar.xz格式
+
+```sh
+$ tar -xJf filename.tar.xz
+```
+
+* tar.bz2格式
+
+```sh
+$ tar -xjf filename.tar.bz2
+```
+
+* 7z格式
+
+```sh
+$ 7za x filename.7z
+```
+
+
+* rar格式
+可以通过7z或unrar解压：
+
+```sh
+$ 7za x filename.rar         # Using 7zip
+$ unrar x filename.rar      # Using Unrar
+```
+
+7z的解压可以命令可以通用以上所有压缩格式
+
+(完)

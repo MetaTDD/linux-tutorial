@@ -1,4 +1,8 @@
-* xref:hello.adoc[hello 2022]
+* xref:index.adoc[说明]
+* xref:remote-server-login-to-ssh-via-jump-proxy.adoc[远程服务器通过跳板机登入SSH]
+* xref:archlinux-install-kvm.adoc[Archlinux安装kvm]
+* xref:linux-command-line-decompression-archives-in-different-formats.adoc[Linux命令行解压不同格式的压缩包]
+* xref:the-default-emacs-shortcut-key-command-under-the-terminal-uses.adoc[终端下的默认Emacs快捷键命令使用]
 * Todo
 ** xref:todo/read.adoc[Read List]
 ** xref:todo/write.adoc[Write List]
