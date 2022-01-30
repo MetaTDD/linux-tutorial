@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>远程服务器通过跳板机登入SSH :: 毛俊的博客</title>
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../..">毛俊的博客</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="archives" data-version="2022">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="hello.html">导航</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="hello.html">hello 2022</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Todo</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="todo/read.html">Read List</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="todo/write.html">Write List</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">导航</span>
+    <span class="version">2022</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="hello.html">导航</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="hello.html">2022</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="hello.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="hello.html">导航</a></li>
+    <li><a href="remote-server-login-to-ssh-via-jump-proxy.html">远程服务器通过跳板机登入SSH</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/MetaTDD/linux-tutorial/edit/1st/docs/modules/ROOT/pages/remote-server-login-to-ssh-via-jump-proxy.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">远程服务器通过跳板机登入SSH</h1>
+<div class="ulist">
+<ul>
+<li>
+<p>通过堡垒机</p>
+</li>
+<li>
+<p>通过跳板机</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>跳板机正如它的名字一样，可以给笔记本连接服务器提供一个跳板。本地主机A可以直接访问B主机，但是无法访问C主机，B主机可以访问C主机。可以通过将B主机作为主机A的跳板机来访问C主机。
+公司提供了跳板机的账号密码，为了避免每次输入账号密码以及提高登入的安全性。通过ssh-keygen命令直接一路回车生成的两个文件：
+公钥文件 ~/.ssh/id_rsa.pub
+私钥文件 ~/.ssh/id_rsa
+生成的公钥通过以下的命令上传到跳板机:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">$ ssh-copy-id  -i /etc/.ssh/id_rsa user@jumpIP</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>user@jumpIP替换为跳板机实际的用户和地址
+如果出现bash: sh-copy-id: command not found，则安装openssh-clients解决。</p>
+</div>
+<div class="paragraph">
+<p>完成跳板机的配置后就完成了一半的工作了。如果现在直接通过跳板机访问远程服务器的话是需要远程服务器的账号密码的。由于远程服务器的密码由于安全原因能不能使用了。这里可以采用2种方法将本地的公钥上传到远程的服务器。</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>借助页面堡垒机登入到sftp，然后将本地之前生成的公钥追加到远程服务器的~/.ssh/authorized_keys文件中。</p>
+</li>
+<li>
+<p>借助跳板机，先将公钥上传到跳板机，再通过跳板机追加到远程服务器的~/.ssh/authorized_keys文件中。
+配置完远程服务器的公钥后，就可以实现本机通过跳板机访问服务器免密登入了:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">$ ssh -J user@jumpIP user@remoteIP</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>jumpIP为跳板机，remoteIP为远程目的服务器
+ssh的-J参数用来指定跳板机，后面空格然后再跟上远程服务器
+带端口例子:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">$ ssh -J user@jumpIP:port user@remoteIP:port</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果有多个跳板机，同单跳板机使用-J参数，之间用逗号,分隔</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">$ ssh -J user@jumpIP1:port,user@jumpIP2:port user@remoteIP:port</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>通过以上的过程就可以通过跳板机访问远程服务器了。但是如果有多个远程服务器需要访问，通过命令行键入就会显得非常的麻烦，并且难于记忆和管理。所以通过ssh的config文件将以上信息管理起来。
+编辑~/.ssh/config文件:
+上面的ssh -J user@jumpIP:port user@remoteIP:port就可以通过以下的配置进行管理:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh"># 跳板机
+Host jump
+    HostName jumpIP
+    User user
+    Port 22
+    IdentityFile ~/.ssh/id_rsa
+
+# 远程服务器
+Host remote
+    HostName remoteIP
+    Port 22
+    User user
+    IdentityFile ~/.ssh/id_rsa
+    ProxyCommand ssh jump -W %h:%p</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Host:定义一个名称
+HostName:定义服务器的地址
+User:定义服务器的用户名
+Port:定义服务器的端口
+IdentityFile:定义公钥位置
+proxyCommand:定义代理命令
+W参数:通过jump服务器建立隧道连接
+如果有远程服务器要通过多少跳板机才能访问，可以通过ssh的配置文件config中的ProxyJump来指定跳板机(openssh&gt;=7.3`)。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh"># 跳板机1
+Host jump1
+    HostName jumpIP1
+    User user
+    Port 22
+    IdentityFile ~/.ssh/id_rsa
+
+# 跳板机2
+Host jump2
+    HostName jumpIP2
+    User user
+    Port 22
+    IdentityFile ~/.ssh/id_rsa
+
+Host remote
+  HostName remoteIP
+  ProxyJump jump1,jump2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>配置完成后就可以直接通过ssh remote进行登入，会先经过跳板机jump1，然后经过跳板机jump2并登入到remote服务器。</p>
+</div>
+<div class="paragraph">
+<p>（完）</p>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
